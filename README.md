@@ -1,2 +1,1 @@
-# Mostruario
-Projeto para mostuario de peças impressas
+Criação de um sistema de "amostras" de peças a serem impressas"
