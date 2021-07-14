@@ -6,7 +6,9 @@ from fnmatch import fnmatch
 
 # Create your views here.
 
-def listaPastas():
+def listaPastas(request):
+    categories = Category.objects.all()
+
     root='/home/will/Imagens/Mostruario/'
     pattern = ("*.jpg")
     listCategorias = []
@@ -22,22 +24,20 @@ def listaPastas():
                 #s2 = path+name
                 #print(s2)/
     listCategorias = sorted(set(listCategorias))
-    
+
     print ("Antes do for:")
     for i in listCategorias:
         print ("Valor de i:", i)
-        Category.objects.get_or_create(i)
-        #category, created = Category.objects.get_or_create(
-        #name=data[i])
+        #posts = Post.
+        #if request.method == 'POST':
+        #data = request.POST
+        #category, created = Category.objects.get_or_create(i)
+    category, created = request.POST.getlist(listCategorias)
+    #return redirect('gallery')
 
-   # print (listCategorias)
-   # print ("-------------")
-   # print (listImagens)
-
-
-
-
-
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'photos/add.html', context)
 
 
 
@@ -50,7 +50,7 @@ def gallery(request):
         photos = Photo.objects.filter(category__name= category)
 
     print ('Passou aqui?')
-    listaPastas()
+    listaPastas(request)
     print ('Passou aqui 2 ?')
 
     categories = Category.objects.all()
