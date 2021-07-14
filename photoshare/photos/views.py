@@ -1,17 +1,58 @@
 from django.http import request
 from django.shortcuts import render, redirect
 from .models import Category, Photo
+import os 
+from fnmatch import fnmatch
 
 # Create your views here.
 
+def listaPastas():
+    root='/home/will/Imagens/Mostruario/'
+    pattern = ("*.jpg")
+    listCategorias = []
+    listImagens = []
+    
+    for path, subdirs, files in os.walk(root):
+        for name in files:
+            if fnmatch(name, pattern):
+            # Removendo o caminho inteiro
+                listCategorias.append(path.replace(root,""))  
+                listImagens.append(path+name)
+                # Localização da fotos
+                #s2 = path+name
+                #print(s2)/
+    listCategorias = sorted(set(listCategorias))
+    
+    print ("Antes do for:")
+    for i in listCategorias:
+        print ("Valor de i:", i)
+        Category.objects.get_or_create(i)
+        #category, created = Category.objects.get_or_create(
+        #name=data[i])
+
+   # print (listCategorias)
+   # print ("-------------")
+   # print (listImagens)
+
+
+
+
+
+
+
+
 def gallery(request):
+    
     category = request.GET.get('category')
     if category == None:
         photos = Photo.objects.all()
     else:
         photos = Photo.objects.filter(category__name= category)
 
-    print('Categoria:', category)
+    print ('Passou aqui?')
+    listaPastas()
+    print ('Passou aqui 2 ?')
+
     categories = Category.objects.all()
     context = {'categories': categories, 'photos': photos}
     return render(request, 'photos/gallery.html', context)
@@ -51,7 +92,6 @@ def addPhoto(request):
     context = {'categories': categories}
     return render(request, 'photos/add.html', context)
 
-  
 
 
 #python manage.py runserver 7000
