@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.http import request
 from django.shortcuts import render, redirect
 from .models import Category, Photo
@@ -13,6 +14,8 @@ def listaPastas(request):
     pattern = ("*.jpg")
     listCategorias = []
     listImagens = []
+    data = request.POST
+
     
     for path, subdirs, files in os.walk(root):
         for name in files:
@@ -24,21 +27,12 @@ def listaPastas(request):
                 #s2 = path+name
                 #print(s2)/
     listCategorias = sorted(set(listCategorias))
-
-    print ("Antes do for:")
     for i in listCategorias:
-        print ("Valor de i:", i)
-        #posts = Post.
-        #if request.method == 'POST':
-        #data = request.POST
-        #category, created = Category.objects.get_or_create(i)
-    category, created = request.POST.getlist(listCategorias)
-    #return redirect('gallery')
+        category, created = Category.objects.get_or_create(
+            name= i)
 
-    categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, 'photos/add.html', context)
 
+          
 
 
 def gallery(request):
@@ -52,7 +46,8 @@ def gallery(request):
     print ('Passou aqui?')
     listaPastas(request)
     print ('Passou aqui 2 ?')
-
+    
+    
     categories = Category.objects.all()
     context = {'categories': categories, 'photos': photos}
     return render(request, 'photos/gallery.html', context)
