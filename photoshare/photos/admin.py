@@ -10,10 +10,20 @@ admin.site.register(Category)
 admin.site.register(Photo)
 admin.site.site_header = 'Admin Mostruario'
 
-@admin.register(Model)
-class ModelAdmin(admin.ModelAdmin):
+@admin.register(Photo)  # Nome do model
+class PhotoAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'get_photo')
-    
-def get_photo(self, obj):
-    if obj.photo:
-        return obj.photo.name
+
+    # Identação
+    # def get_photo(self, obj):
+    #     if obj.image:
+    #         return obj.image.name
+
+    # Antes do Django 3.2
+    # get_photo.short_description = 'Foto'
+
+    # Django 3.2+
+    @admin.display(description='Foto')
+    def get_photo(self, obj):
+        if obj.image:
+            return obj.image.name
