@@ -9,11 +9,11 @@ from .models import *
 admin.site.register(Category)
 admin.site.register(Photo)
 admin.site.site_header = 'Admin Mostruario'
-#
-#@admin.register(Model)
-#class ModelAdmin(admin.ModelAdmin):
-#    list_display = ('__str__', 'get_photo')
-#    
-#def get_photo(self, obj):
-#    if obj.photo:
-#        return obj.photo.name
+
+@admin.register(Model)
+class ModelAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'get_photo')
+    
+def get_photo(self, obj):
+    if obj.photo:
+        return obj.photo.name

@@ -24,15 +24,11 @@ def listaPastas(request):
                 listCategorias.append(path.replace(root,""))  
                 listImagens.append(path+name)
                 # Localização da fotos
-                #s2 = path+name
-                #print(s2)/
+                s2 = path+"/"+name
+                print(s2)
     listCategorias = sorted(set(listCategorias))
     for i in listCategorias:
-        category, created = Category.objects.get_or_create(
-            name= i)
-
-
-          
+        category, created = Category.objects.get_or_create(name= i)
 
 
 def gallery(request):
