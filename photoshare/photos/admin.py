@@ -13,13 +13,14 @@ admin.site.unregister(Photo)
 
 @admin.register(Photo)  # Nome do model
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'get_photo')
+    list_display = ('get_photo','__str__')
 
     # Django 3.2+
     @admin.display(description='Nome')
     def get_photo(self, obj):
         if obj.image:
             return obj.image.name
+
     
    
     #def has_add_permission(self, request, obj=None):

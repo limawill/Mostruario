@@ -15,20 +15,17 @@ def listaPastas(request):
     listCategorias = []
     listImagens = []
     data = request.POST
-
     
     for path, subdirs, files in os.walk(root):
         for name in files:
             if fnmatch(name, pattern):
-            # Removendo o caminho inteiro
-                listCategorias.append(path.replace(root,""))  
-                listImagens.append(path+name)
+                # Crindo o nome da categoria
+                novaCategoria=path.replace(root,"")
                 # Localização da fotos
-                s2 = path+"/"+name
-                print(s2)
-    listCategorias = sorted(set(listCategorias))
-    for i in listCategorias:
-        category, created = Category.objects.get_or_create(name= i)
+                caminhoImagem = path + '/' + name
+                category, created = Category.objects.get_or_create(name= novaCategoria)
+                # Passando a categoria e a lista de imagens para o template
+                addPhoto(request,novaCategoria,caminhoImagem)
 
 
 def gallery(request):
@@ -39,11 +36,7 @@ def gallery(request):
     else:
         photos = Photo.objects.filter(category__name= category)
 
-    print ('Passou aqui?')
     listaPastas(request)
-    print ('Passou aqui 2 ?')
-    
-    
     categories = Category.objects.all()
     context = {'categories': categories, 'photos': photos}
     return render(request, 'photos/gallery.html', context)
@@ -52,8 +45,6 @@ def gallery(request):
 def viewPhoto(request, pk):
     photo = Photo.objects.get(id=pk)
     return render(request, 'photos/photo.html', {'photo': photo})
-
-
 
 
 def addPhoto(request):
@@ -77,11 +68,35 @@ def addPhoto(request):
                 description=data['description'],
                 image=image,
             )
-
         return redirect('gallery')
-
+    
     context = {'categories': categories}
     return render(request, 'photos/add.html', context)
+
+
+def addPhoto(request,categoria,fotoAtual):
+    
+    categories = Category.objects.all()
+    print ("--------------1------------------")
+
+    if request.method == 'POST':
+        data = request.POST
+        images = request.FILES.getlist(fotoAtual)
+        print ("--------------2------------------")
+        print(images)
+        print ("---------------3-----------------")
+
+        for image in images:
+            photo = Photo.objects.create(
+                category=categoria,
+                description= ' ',
+                image=image,
+            )
+        return redirect('gallery')
+    
+    context = {'categories': categories}
+    return render(request, 'photos/add.html', context)
+
 
 
 
