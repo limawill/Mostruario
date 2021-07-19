@@ -29,9 +29,8 @@ def listaPastas(request):
 
 
 def gallery(request):
-    
     category = request.GET.get('category')
-    if category == None:
+    if category is None:
         photos = Photo.objects.all()
     else:
         photos = Photo.objects.filter(category__name= category)
@@ -49,6 +48,8 @@ def viewPhoto(request, pk):
 
 def addPhoto(request):
     categories = Category.objects.all()
+    categoria = request.GET.get('categoria')
+    fotoAtual = request.GET.get('fotoAtual')
 
     if request.method == 'POST':
         data = request.POST
@@ -72,33 +73,6 @@ def addPhoto(request):
     
     context = {'categories': categories}
     return render(request, 'photos/add.html', context)
-
-
-def addPhoto(request):
-    categoria = request.GET.get('categoria')
-    fotoAtual = request.GET.get('fotoAtual')
-    
-    categories = Category.objects.all()
-    print ("--------------1------------------")
-
-    if request.method == 'POST':
-        data = request.POST
-        images = request.FILES.getlist(fotoAtual)
-        print ("--------------2------------------")
-        print(images)
-        print ("---------------3-----------------")
-
-        for image in images:
-            photo = Photo.objects.create(
-                category=categoria,
-                description= ' ',
-                image=image,
-            )
-        return redirect('gallery')
-    
-    context = {'categories': categories}
-    return render(request, 'photos/add.html', context)
-
 
 
 
