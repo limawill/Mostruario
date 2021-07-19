@@ -10,7 +10,7 @@ from fnmatch import fnmatch
 def listaPastas(request):
     categories = Category.objects.all()
 
-    root='/home/will/Imagens/Mostruario/'
+    root='/home/arthur/repos/tmp/most-will/Mostruario/'
     pattern = ("*.jpg")
     listCategorias = []
     listImagens = []
@@ -25,7 +25,7 @@ def listaPastas(request):
                 caminhoImagem = path + '/' + name
                 category, created = Category.objects.get_or_create(name= novaCategoria)
                 # Passando a categoria e a lista de imagens para o template
-                addPhoto(request,novaCategoria,caminhoImagem)
+                #addPhoto(request,novaCategoria,caminhoImagem)
 
 
 def gallery(request):
@@ -74,7 +74,9 @@ def addPhoto(request):
     return render(request, 'photos/add.html', context)
 
 
-def addPhoto(request,categoria,fotoAtual):
+def addPhoto(request):
+    categoria = request.GET.get('categoria')
+    fotoAtual = request.GET.get('fotoAtual')
     
     categories = Category.objects.all()
     print ("--------------1------------------")
