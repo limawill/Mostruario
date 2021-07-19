@@ -8,20 +8,19 @@ from .models import *
 
 admin.site.register(Category)
 admin.site.register(Photo)
-admin.site.site_header = 'Admin Mostruario'
+admin.site.site_header = "Admin Mostruario"
 admin.site.unregister(Photo)
+
 
 @admin.register(Photo)  # Nome do model
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('get_photo','__str__')
+    list_display = ("get_photo", "__str__")
 
     # Django 3.2+
-    @admin.display(description='Nome')
+    @admin.display(description="Nome")
     def get_photo(self, obj):
         if obj.image:
             return obj.image.name
 
-    
-   
-    #def has_add_permission(self, request, obj=None):
+    # def has_add_permission(self, request, obj=None):
     #    return False
