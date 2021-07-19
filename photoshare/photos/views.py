@@ -69,6 +69,13 @@ def addPhoto(request):
             photo = Photo.objects.create(
                 category=category,
                 description=data["description"],
+                image=image,
+            )
+        return redirect("gallery")
+
+    context = {"categories": categories}
+    return render(request, "photos/add.html", context)
+
 
 # python manage.py runserver 7000
 # python manage.py makemigrations
